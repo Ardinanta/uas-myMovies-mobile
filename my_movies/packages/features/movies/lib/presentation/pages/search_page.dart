@@ -49,6 +49,13 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {});
   }
 
+  Future<void> _refresh(BuildContext context) async {
+    final bloc = context.read<SearchBloc>()..add(const SearchRetried());
+    await bloc.stream.firstWhere(
+      (state) => state.status != SearchStatus.loading,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -74,8 +81,11 @@ class _SearchPageState extends State<SearchPage> {
           bottom: false,
           child: BlocBuilder<SearchBloc, SearchState>(
             builder: (context, state) {
-              return CustomScrollView(
-                slivers: [
+              return AppRefreshIndicator(
+                onRefresh: () => _refresh(context),
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: [
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20, 14, 20, 22),
@@ -194,7 +204,8 @@ class _SearchPageState extends State<SearchPage> {
                         const SizedBox(height: 92),
                       ],
                     ),
-                ],
+                  ],
+                ),
               );
             },
           ),

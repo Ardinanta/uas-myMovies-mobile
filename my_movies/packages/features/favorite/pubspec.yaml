@@ -2,6 +2,7 @@ name: favorite
 description: "A new Flutter package project."
 version: 0.0.1
 homepage:
+publish_to: none
 
 resolution: workspace
 
@@ -12,11 +13,23 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  core_ui:
+    path: ../../core_ui
+  core_services:
+    path: ../../core_services
+  either_dart: ^1.0.0
+  flutter_bloc: ^9.1.1
+  get_it: ^8.2.0
+  json_annotation: ^4.9.0
+  movies:
+    path: ../movies
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  json_serializable: ^6.9.5
+  build_runner: ^2.4.15
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

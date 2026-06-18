@@ -1,12 +1,20 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:favorite/favorite.dart';
+import 'package:movies/movies.dart';
 
 void main() {
-  test('adds one to input values', () {
-    final calculator = Calculator();
-    expect(calculator.addOne(2), 3);
-    expect(calculator.addOne(-7), -6);
-    expect(calculator.addOne(0), 1);
+  test('creates favorite movie entity', () {
+    const movie = Movie(
+      id: 1,
+      title: 'Neon Genesis',
+      overview: 'A favorite movie.',
+      voteAverage: 8.4,
+    );
+
+    const favorite = FavoriteMovie(movie: movie);
+
+    expect(favorite.movie.id, 1);
+    expect(favorite.movie.title, 'Neon Genesis');
   });
 }

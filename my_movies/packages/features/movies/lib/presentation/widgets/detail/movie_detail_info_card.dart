@@ -1,6 +1,9 @@
 import 'package:core_ui/core_ui.dart';
+import 'package:favorite/favorite.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
+import '../../../domain/entities/movie.dart';
 import '../../view_models/movie_detail_view_model.dart';
 
 class MovieDetailInfoCard extends StatefulWidget {
@@ -20,9 +23,73 @@ class MovieDetailInfoCard extends StatefulWidget {
 class _MovieDetailInfoCardState extends State<MovieDetailInfoCard> {
   bool _isFavorite = false;
   bool _isSaved = false;
+  bool _isFavoriteLoading = true;
 
-  void _toggleFavorite() {
-    setState(() => _isFavorite = !_isFavorite);
+  @override
+  void initState() {
+    super.initState();
+    _loadFavoriteStatus();
+  }
+
+  @override
+  void didUpdateWidget(MovieDetailInfoCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.movie.id != widget.movie.id) {
+      _loadFavoriteStatus();
+    }
+  }
+
+  Future<void> _loadFavoriteStatus() async {
+    setState(() => _isFavoriteLoading = true);
+    setupFavoriteDependencies();
+
+    final result = await GetIt.instance<IsMovieFavorite>()(widget.movie.id);
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _isFavorite = result.isRight && result.right;
+      _isFavoriteLoading = false;
+    });
+  }
+
+  Future<void> _toggleFavorite() async {
+    if (_isFavoriteLoading) {
+      return;
+    }
+
+    setState(() => _isFavoriteLoading = true);
+
+    final movie = Movie(
+      id: widget.movie.id,
+      title: widget.movie.title,
+      overview: widget.movie.overview,
+      voteAverage: widget.movie.rating,
+      posterPath: widget.movie.posterPath,
+      backdropPath: widget.movie.backdropPath,
+      releaseDate: widget.movie.releaseDate,
+    );
+    final result = await GetIt.instance<ToggleFavoriteMovie>()(movie);
+
+    if (!mounted) {
+      return;
+    }
+
+    result.fold(
+      (failure) {
+        setState(() => _isFavoriteLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(failure.message)),
+        );
+      },
+      (isFavorite) {
+        setState(() {
+          _isFavorite = isFavorite;
+          _isFavoriteLoading = false;
+        });
+      },
+    );
   }
 
   void _toggleSaved() {
@@ -97,12 +164,20 @@ class _MovieDetailInfoCardState extends State<MovieDetailInfoCard> {
                 ),
                 const SizedBox(width: 10),
                 IconButton.filled(
-                  onPressed: _toggleFavorite,
-                  icon: Icon(
-                    _isFavorite
-                        ? Icons.favorite_rounded
-                        : Icons.favorite_border_rounded,
-                  ),
+                  onPressed: _isFavoriteLoading ? null : _toggleFavorite,
+                  icon: _isFavoriteLoading
+                      ? const SizedBox.square(
+                          dimension: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: AppColors.white,
+                          ),
+                        )
+                      : Icon(
+                          _isFavorite
+                              ? Icons.favorite_rounded
+                              : Icons.favorite_border_rounded,
+                        ),
                   tooltip: _isFavorite ? 'Hapus Favorite' : 'Favorite',
                   style: IconButton.styleFrom(
                     backgroundColor: _isFavorite

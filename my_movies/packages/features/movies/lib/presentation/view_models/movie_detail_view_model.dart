@@ -10,6 +10,9 @@ class MovieDetailViewModel {
     required this.overview,
     required this.rating,
     required this.releaseYear,
+    this.posterPath,
+    this.backdropPath,
+    this.releaseDate,
     this.posterUrl,
     this.backdropUrl,
   });
@@ -21,6 +24,9 @@ class MovieDetailViewModel {
       overview: movie.overview,
       rating: movie.voteAverage,
       releaseYear: movie.releaseYear,
+      posterPath: movie.posterPath,
+      backdropPath: movie.backdropPath,
+      releaseDate: movie.releaseDate,
       posterUrl: ImageUrlHelper.tmdbImageUrl(movie.posterPath),
       backdropUrl: ImageUrlHelper.tmdbImageUrl(movie.backdropPath, size: 'w780'),
     );
@@ -31,6 +37,9 @@ class MovieDetailViewModel {
   final String overview;
   final double rating;
   final String releaseYear;
+  final String? posterPath;
+  final String? backdropPath;
+  final DateTime? releaseDate;
   final String? posterUrl;
   final String? backdropUrl;
 }

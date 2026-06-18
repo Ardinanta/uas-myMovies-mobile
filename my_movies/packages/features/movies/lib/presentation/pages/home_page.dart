@@ -46,62 +46,72 @@ class HomePage extends StatelessWidget {
         ),
         body: SafeArea(
           bottom: false,
-          child: CustomScrollView(
-            slivers: [
-              const SliverToBoxAdapter(child: HomeHeader()),
-              BlocBuilder<HomeBloc, HomeState>(
-                builder: (context, state) {
-                  return switch (state.status) {
-                    HomeStatus.initial || HomeStatus.loading =>
-                      const SliverToBoxAdapter(child: _HomeLoadingState()),
-                    HomeStatus.failure => SliverToBoxAdapter(
-                      child: _HomeErrorState(
-                        message: state.message ?? 'Gagal memuat film.',
-                        onRetry: () {
-                          context.read<HomeBloc>().add(const HomeRetried());
-                        },
+          child: AppRefreshIndicator(
+            onRefresh: () => _refresh(context),
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                const SliverToBoxAdapter(child: HomeHeader()),
+                BlocBuilder<HomeBloc, HomeState>(
+                  builder: (context, state) {
+                    return switch (state.status) {
+                      HomeStatus.initial || HomeStatus.loading =>
+                        const SliverToBoxAdapter(child: _HomeLoadingState()),
+                      HomeStatus.failure => SliverToBoxAdapter(
+                        child: _HomeErrorState(
+                          message: state.message ?? 'Gagal memuat film.',
+                          onRetry: () {
+                            context.read<HomeBloc>().add(const HomeRetried());
+                          },
+                        ),
                       ),
-                    ),
-                    HomeStatus.empty => const SliverToBoxAdapter(
-                      child: _HomeEmptyState(),
-                    ),
-                    HomeStatus.success => SliverList.list(
-                      children: [
-                        if (state.trendingMovies.isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 14, 20, 28),
-                            child: HomeHeroCarousel(
-                              movies: state.trendingMovies,
-                              onMovieTap: (movie) => onMovieTap(movie.id),
+                      HomeStatus.empty => const SliverToBoxAdapter(
+                        child: _HomeEmptyState(),
+                      ),
+                      HomeStatus.success => SliverList.list(
+                        children: [
+                          if (state.trendingMovies.isNotEmpty)
+                            Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(20, 14, 20, 28),
+                              child: HomeHeroCarousel(
+                                movies: state.trendingMovies,
+                                onMovieTap: (movie) => onMovieTap(movie.id),
+                              ),
                             ),
+                          MovieSection(
+                            title: 'Popular Movies',
+                            movies: state.popularMovies,
+                            onMovieTap: (movie) => onMovieTap(movie.id),
                           ),
-                        MovieSection(
-                          title: 'Popular Movies',
-                          movies: state.popularMovies,
-                          onMovieTap: (movie) => onMovieTap(movie.id),
-                        ),
-                        MovieSection(
-                          title: 'Top Rated Movies',
-                          movies: state.topRatedMovies,
-                          isLarge: true,
-                          onMovieTap: (movie) => onMovieTap(movie.id),
-                        ),
-                        MovieSection(
-                          title: 'Upcoming Movies',
-                          movies: state.upcomingMovies,
-                          onMovieTap: (movie) => onMovieTap(movie.id),
-                        ),
-                        const SizedBox(height: 92),
-                      ],
-                    ),
-                  };
-                },
-              ),
-            ],
+                          MovieSection(
+                            title: 'Top Rated Movies',
+                            movies: state.topRatedMovies,
+                            isLarge: true,
+                            onMovieTap: (movie) => onMovieTap(movie.id),
+                          ),
+                          MovieSection(
+                            title: 'Upcoming Movies',
+                            movies: state.upcomingMovies,
+                            onMovieTap: (movie) => onMovieTap(movie.id),
+                          ),
+                          const SizedBox(height: 92),
+                        ],
+                      ),
+                    };
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _refresh(BuildContext context) async {
+    final bloc = context.read<HomeBloc>()..add(const HomeRetried());
+    await bloc.stream.firstWhere((state) => state.status != HomeStatus.loading);
   }
 }
 

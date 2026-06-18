@@ -67,43 +67,56 @@ class _MovieDetailContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final movie = state.movie!;
 
-    return CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(
-          child: SizedBox(
-            height: 462,
-            child: Stack(
-              children: [
-                MovieDetailHeader(
-                  movie: movie,
-                  onBackTap: () => Navigator.of(context).pop(),
-                  onShareTap: () {},
-                ),
-                Positioned(
-                  left: 20,
-                  right: 20,
-                  top: 266,
-                  child: MovieDetailInfoCard(
+    return AppRefreshIndicator(
+      onRefresh: () => _refresh(context, movie.id),
+      child: CustomScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        slivers: [
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 462,
+              child: Stack(
+                children: [
+                  MovieDetailHeader(
                     movie: movie,
-                    onWatchTap: state.trailerUrl == null
-                        ? null
-                        : () => _openTrailerVideo(context, state.trailerUrl!),
+                    onBackTap: () => Navigator.of(context).pop(),
+                    onShareTap: () {},
                   ),
-                ),
-              ],
+                  Positioned(
+                    left: 20,
+                    right: 20,
+                    top: 266,
+                    child: MovieDetailInfoCard(
+                      movie: movie,
+                      onWatchTap: state.trailerUrl == null
+                          ? null
+                          : () => _openTrailerVideo(context, state.trailerUrl!),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        const SliverToBoxAdapter(child: SizedBox(height: 12)),
-        SliverToBoxAdapter(child: MovieOverviewSection(overview: movie.overview)),
-        SliverToBoxAdapter(child: MovieCastSection(cast: state.cast)),
-        SliverToBoxAdapter(
-          child: RelatedMoviesSection(
-            movies: state.relatedMovies,
-            onMovieTap: (movie) => onRelatedMovieTap(movie.id),
+          const SliverToBoxAdapter(child: SizedBox(height: 12)),
+          SliverToBoxAdapter(
+            child: MovieOverviewSection(overview: movie.overview),
           ),
-        ),
-      ],
+          SliverToBoxAdapter(child: MovieCastSection(cast: state.cast)),
+          SliverToBoxAdapter(
+            child: RelatedMoviesSection(
+              movies: state.relatedMovies,
+              onMovieTap: (movie) => onRelatedMovieTap(movie.id),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _refresh(BuildContext context, int movieId) async {
+    final bloc = context.read<MovieDetailBloc>()..add(MovieDetailRetried(movieId));
+    await bloc.stream.firstWhere(
+      (state) => state.status != MovieDetailStatus.loading,
     );
   }
 

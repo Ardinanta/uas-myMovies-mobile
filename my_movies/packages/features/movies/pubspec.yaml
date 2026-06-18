@@ -17,6 +17,8 @@ dependencies:
     path: ../../core_ui
   core_services:
     path: ../../core_services
+  favorite:
+    path: ../favorite
   dio: ^5.9.2
   either_dart: ^1.0.0
   flutter_bloc: ^9.1.1

@@ -1,4 +1,5 @@
 import 'package:auth/auth.dart';
+import 'package:favorite/favorite.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/movies.dart';
 
@@ -63,9 +64,19 @@ class AppRouter {
               ).pushNamed(AppRoutes.movieDetail, arguments: movieId);
             },
           ),
-          AppRoutes.favorite => const _RoutePlaceholderPage(
-            title: 'Favorite Movies',
-            routeName: AppRoutes.favorite,
+          AppRoutes.favorite => FavoritePage(
+            favoriteBloc: createFavoriteBloc(),
+            onHomeTap: () {
+              Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+            },
+            onSearchTap: () {
+              Navigator.of(context).pushReplacementNamed(AppRoutes.search);
+            },
+            onMovieTap: (movieId) {
+              Navigator.of(
+                context,
+              ).pushNamed(AppRoutes.movieDetail, arguments: movieId);
+            },
           ),
           _ => const _RoutePlaceholderPage(
             title: 'Halaman Tidak Ditemukan',
