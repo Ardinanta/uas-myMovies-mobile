@@ -1,0 +1,74 @@
+import 'package:auth/auth.dart';
+import 'package:flutter/material.dart';
+
+class AppRoutes {
+  const AppRoutes._();
+
+  static const login = '/login';
+  static const home = '/home';
+  static const movieDetail = '/movie-detail';
+  static const search = '/search';
+  static const favorite = '/favorite';
+}
+
+class AppRouter {
+  const AppRouter._();
+
+  static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (context) {
+        return switch (settings.name) {
+          AppRoutes.login => LoginPage(
+            onLogin: () {
+              Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+            },
+          ),
+          AppRoutes.home => const _RoutePlaceholderPage(
+            title: 'Movies Terbaru',
+            routeName: AppRoutes.home,
+          ),
+          AppRoutes.movieDetail => const _RoutePlaceholderPage(
+            title: 'Detail Movie',
+            routeName: AppRoutes.movieDetail,
+          ),
+          AppRoutes.search => const _RoutePlaceholderPage(
+            title: 'Search Movies',
+            routeName: AppRoutes.search,
+          ),
+          AppRoutes.favorite => const _RoutePlaceholderPage(
+            title: 'Favorite Movies',
+            routeName: AppRoutes.favorite,
+          ),
+          _ => const _RoutePlaceholderPage(
+            title: 'Halaman Tidak Ditemukan',
+            routeName: 'unknown',
+          ),
+        };
+      },
+    );
+  }
+}
+
+class _RoutePlaceholderPage extends StatelessWidget {
+  const _RoutePlaceholderPage({
+    required this.title,
+    required this.routeName,
+  });
+
+  final String title;
+  final String routeName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(title)),
+      body: Center(
+        child: Text(
+          routeName,
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+      ),
+    );
+  }
+}

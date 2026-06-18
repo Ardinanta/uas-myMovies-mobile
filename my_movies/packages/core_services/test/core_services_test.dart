@@ -3,10 +3,27 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:core_services/core_services.dart';
 
 void main() {
-  test('adds one to input values', () {
-    final calculator = Calculator();
-    expect(calculator.addOne(2), 3);
-    expect(calculator.addOne(-7), -6);
-    expect(calculator.addOne(0), 1);
+  test('exposes TMDb constants', () {
+    expect(TmdbConstants.baseUrl, 'https://api.themoviedb.org/3');
+  });
+
+  test('registers TMDb API endpoints', () {
+    expect(ApiRegistry.tmdb.nowPlayingMovies, '/movie/now_playing');
+    expect(ApiRegistry.tmdb.movieDetail(12), '/movie/12');
+    expect(ApiRegistry.tmdb.searchMovies, '/search/movie');
+  });
+
+  test('builds TMDb image URL', () {
+    expect(
+      ImageUrlHelper.tmdbImageUrl('/poster.jpg'),
+      'https://image.tmdb.org/t/p/w500/poster.jpg',
+    );
+    expect(ImageUrlHelper.tmdbImageUrl(null), isNull);
+  });
+
+  test('maps missing API key exception into failure', () {
+    final failure = ErrorMapper.map(const MissingApiKeyException());
+
+    expect(failure.type, FailureType.missingApiKey);
   });
 }
