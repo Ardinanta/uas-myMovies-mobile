@@ -37,6 +37,11 @@ abstract class ErrorMapper {
   }
 
   static Failure _mapDioException(DioException error) {
+    final innerError = error.error;
+    if (innerError is MissingApiKeyException) {
+      return map(innerError);
+    }
+
     final statusCode = error.response?.statusCode;
     final responseMessage = _messageFromResponse(error.response?.data);
 

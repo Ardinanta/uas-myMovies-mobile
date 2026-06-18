@@ -30,6 +30,12 @@ melos:
     analyze:
       description: "Run Flutter analyzer across all workspace packages"
       run: dart run melos exec -- "flutter analyze"
+    build_runner:
+      description: "Run build_runner build across packages that use code generation"
+      run: dart run melos exec --depends-on=build_runner -- "dart run build_runner build --delete-conflicting-outputs"
+    build_runner:watch:
+      description: "Run build_runner watch across packages that use code generation"
+      run: dart run melos exec --depends-on=build_runner -- "dart run build_runner watch --delete-conflicting-outputs"
 
 environment:
   sdk: ^3.11.0

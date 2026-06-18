@@ -1,5 +1,6 @@
 import 'package:auth/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:movies/movies.dart';
 
 class AppRoutes {
   const AppRoutes._();
@@ -24,9 +25,19 @@ class AppRouter {
               Navigator.of(context).pushReplacementNamed(AppRoutes.home);
             },
           ),
-          AppRoutes.home => const _RoutePlaceholderPage(
-            title: 'Movies Terbaru',
-            routeName: AppRoutes.home,
+          AppRoutes.home => HomePage(
+            homeBloc: createHomeBloc(),
+            onSearchTap: () {
+              Navigator.of(context).pushNamed(AppRoutes.search);
+            },
+            onFavoriteTap: () {
+              Navigator.of(context).pushNamed(AppRoutes.favorite);
+            },
+            onMovieTap: (movieId) {
+              Navigator.of(
+                context,
+              ).pushNamed(AppRoutes.movieDetail, arguments: movieId);
+            },
           ),
           AppRoutes.movieDetail => const _RoutePlaceholderPage(
             title: 'Detail Movie',

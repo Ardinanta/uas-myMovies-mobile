@@ -1,6 +1,7 @@
 import 'network/dio_client.dart';
 import 'network/network_info.dart';
 import 'storage/local_storage_service.dart';
+import 'storage/secure_storage_service.dart';
 
 class CoreServices {
   const CoreServices({
@@ -18,6 +19,6 @@ CoreServices setupCoreServices() {
   return CoreServices(
     dioClient: DioClient(),
     networkInfo: const NetworkInfoImpl(),
-    localStorage: InMemoryLocalStorageService(),
+    localStorage: const SecureStorageService(),
   );
 }

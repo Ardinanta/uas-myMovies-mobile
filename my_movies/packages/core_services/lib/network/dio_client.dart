@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../api/api_registry.dart';
+import '../api/tmdb_api.dart';
 import '../constants/tmdb_constants.dart';
 import '../error/exception.dart';
 import 'api_interceptor.dart';
@@ -26,13 +26,13 @@ class DioClient {
 
   Future<Map<String, dynamic>> getNowPlayingMovies({int page = 1}) {
     return get(
-      ApiRegistry.tmdb.nowPlayingMovies,
+      TmdbApi.nowPlayingMovies,
       queryParameters: {'page': page},
     );
   }
 
   Future<Map<String, dynamic>> getMovieDetail(int movieId) {
-    return get(ApiRegistry.tmdb.movieDetail(movieId));
+    return get(TmdbApi.movieDetailById(movieId));
   }
 
   Future<Map<String, dynamic>> searchMovies({
@@ -40,7 +40,7 @@ class DioClient {
     int page = 1,
   }) {
     return get(
-      ApiRegistry.tmdb.searchMovies,
+      TmdbApi.searchMovies,
       queryParameters: {
         'query': query,
         'page': page,

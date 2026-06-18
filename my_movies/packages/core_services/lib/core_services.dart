@@ -9,5 +9,6 @@ export 'network/api_interceptor.dart';
 export 'network/dio_client.dart';
 export 'network/network_info.dart';
 export 'storage/local_storage_service.dart';
+export 'storage/secure_storage_service.dart';
 export 'utils/date_formatter.dart';
 export 'utils/image_url_helper.dart';

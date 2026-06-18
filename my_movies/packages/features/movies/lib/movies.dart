@@ -1,5 +1,20 @@
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'data/datasources/movie_remote_data_source.dart';
+export 'data/models/movie_model.dart';
+export 'data/models/movie_response_model.dart';
+export 'data/repositories/movie_repository_impl.dart';
+export 'domain/entities/movie.dart';
+export 'domain/repositories/movie_repository.dart';
+export 'domain/usecases/get_movie_detail.dart';
+export 'domain/usecases/get_favorite_movies.dart';
+export 'domain/usecases/get_favorite_tv.dart';
+export 'domain/usecases/get_now_playing_movies.dart';
+export 'domain/usecases/get_popular_movies.dart';
+export 'domain/usecases/get_top_rated_movies.dart';
+export 'domain/usecases/get_trending_movies.dart';
+export 'domain/usecases/get_upcoming_movies.dart';
+export 'domain/usecases/search_movies.dart';
+export 'movies_injection.dart';
+export 'presentation/bloc/home/home_bloc.dart';
+export 'presentation/bloc/home/home_event.dart';
+export 'presentation/bloc/home/home_state.dart';
+export 'presentation/pages/home_page.dart';

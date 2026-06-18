@@ -8,9 +8,10 @@ void main() {
   });
 
   test('registers TMDb API endpoints', () {
-    expect(ApiRegistry.tmdb.nowPlayingMovies, '/movie/now_playing');
-    expect(ApiRegistry.tmdb.movieDetail(12), '/movie/12');
-    expect(ApiRegistry.tmdb.searchMovies, '/search/movie');
+    expect(TmdbApi.nowPlayingMovies, '/movie/now_playing');
+    expect(TmdbApi.movieDetail, '/movie/{movieId}');
+    expect(TmdbApi.movieDetailById(12), '/movie/12');
+    expect(TmdbApi.searchMovies, '/search/movie');
   });
 
   test('builds TMDb image URL', () {
