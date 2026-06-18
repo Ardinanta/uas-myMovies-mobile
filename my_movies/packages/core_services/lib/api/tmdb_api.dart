@@ -21,6 +21,7 @@ abstract class TmdbApi {
   static const String validateRequestTokenWithLogin =
       '/authentication/token/validate_with_login';
   static const String createSession = '/authentication/session/new';
+  static const String deleteSession = '/authentication/session';
   static const String createGuestSession = '/authentication/guest_session/new';
 
   //account

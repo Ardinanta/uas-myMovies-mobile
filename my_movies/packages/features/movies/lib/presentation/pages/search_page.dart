@@ -16,12 +16,14 @@ class SearchPage extends StatefulWidget {
     required this.searchBloc,
     required this.onHomeTap,
     required this.onFavoriteTap,
+    required this.onProfileTap,
     required this.onMovieTap,
   });
 
   final SearchBloc searchBloc;
   final VoidCallback onHomeTap;
   final VoidCallback onFavoriteTap;
+  final VoidCallback onProfileTap;
   final ValueChanged<int> onMovieTap;
 
   @override
@@ -73,7 +75,7 @@ class _SearchPageState extends State<SearchPage> {
               case AppBottomNavItem.favorite:
                 widget.onFavoriteTap();
               case AppBottomNavItem.profile:
-                break;
+                widget.onProfileTap();
             }
           },
         ),

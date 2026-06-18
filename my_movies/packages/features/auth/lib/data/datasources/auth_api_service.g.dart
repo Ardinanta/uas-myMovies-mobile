@@ -107,6 +107,26 @@ class _AuthApiService implements AuthApiService {
   }
 
   @override
+  Future<void> deleteSession(AuthDeleteSessionRequestModel request) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _options = _setStreamType<void>(
+      Options(method: 'DELETE', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/authentication/session',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    await _dio.fetch<void>(_options);
+  }
+
+  @override
   Future<GuestSessionModel> createGuestSession() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

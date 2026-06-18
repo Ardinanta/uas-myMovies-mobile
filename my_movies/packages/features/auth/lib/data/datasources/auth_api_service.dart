@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../models/auth_create_session_request_model.dart';
+import '../models/auth_delete_session_request_model.dart';
 import '../models/auth_request_token_model.dart';
 import '../models/auth_session_model.dart';
 import '../models/auth_validate_login_request_model.dart';
@@ -26,6 +27,11 @@ abstract class AuthApiService {
   @POST(TmdbApi.createSession)
   Future<AuthSessionModel> createSession(
     @Body() AuthCreateSessionRequestModel request,
+  );
+
+  @DELETE(TmdbApi.deleteSession)
+  Future<void> deleteSession(
+    @Body() AuthDeleteSessionRequestModel request,
   );
 
   @GET(TmdbApi.createGuestSession)

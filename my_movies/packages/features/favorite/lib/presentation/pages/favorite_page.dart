@@ -13,12 +13,14 @@ class FavoritePage extends StatelessWidget {
     required this.favoriteBloc,
     required this.onHomeTap,
     required this.onSearchTap,
+    required this.onProfileTap,
     required this.onMovieTap,
   });
 
   final FavoriteBloc favoriteBloc;
   final VoidCallback onHomeTap;
   final VoidCallback onSearchTap;
+  final VoidCallback onProfileTap;
   final ValueChanged<int> onMovieTap;
 
   @override
@@ -38,7 +40,7 @@ class FavoritePage extends StatelessWidget {
               case AppBottomNavItem.favorite:
                 break;
               case AppBottomNavItem.profile:
-                break;
+                onProfileTap();
             }
           },
         ),

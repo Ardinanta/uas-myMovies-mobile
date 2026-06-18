@@ -18,6 +18,7 @@ void main() {
           ),
           onSearchTap: () {},
           onFavoriteTap: () {},
+          onProfileTap: () {},
           onMovieTap: (_) {},
         ),
       ),

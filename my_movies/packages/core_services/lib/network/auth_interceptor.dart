@@ -24,6 +24,12 @@ class AuthInterceptor extends Interceptor {
       return;
     }
 
+    final existingSessionId = options.queryParameters['session_id'];
+    if (existingSessionId is String && existingSessionId.trim().isNotEmpty) {
+      super.onRequest(options, handler);
+      return;
+    }
+
     final sessionId = await _storageService.getString(AuthStorageKeys.sessionId);
     if (sessionId == null || sessionId.trim().isEmpty) {
       handler.reject(

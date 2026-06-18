@@ -15,12 +15,14 @@ class HomePage extends StatelessWidget {
     required this.homeBloc,
     required this.onSearchTap,
     required this.onFavoriteTap,
+    required this.onProfileTap,
     required this.onMovieTap,
   });
 
   final HomeBloc homeBloc;
   final VoidCallback onSearchTap;
   final VoidCallback onFavoriteTap;
+  final VoidCallback onProfileTap;
   final ValueChanged<int> onMovieTap;
 
   @override
@@ -40,7 +42,7 @@ class HomePage extends StatelessWidget {
               case AppBottomNavItem.favorite:
                 onFavoriteTap();
               case AppBottomNavItem.profile:
-                break;
+                onProfileTap();
             }
           },
         ),

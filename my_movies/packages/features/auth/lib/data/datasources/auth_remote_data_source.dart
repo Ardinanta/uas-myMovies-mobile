@@ -1,6 +1,7 @@
 import 'package:core_services/core_services.dart';
 
 import '../models/auth_create_session_request_model.dart';
+import '../models/auth_delete_session_request_model.dart';
 import '../models/auth_request_token_model.dart';
 import '../models/auth_session_model.dart';
 import '../models/auth_validate_login_request_model.dart';
@@ -18,6 +19,8 @@ abstract class AuthRemoteDataSource {
   });
 
   Future<AuthSessionModel> createSession(String requestToken);
+
+  Future<void> deleteSession(String sessionId);
 
   Future<GuestSessionModel> createGuestSession();
 
@@ -56,6 +59,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<AuthSessionModel> createSession(String requestToken) {
     return _apiService.createSession(
       AuthCreateSessionRequestModel(requestToken: requestToken),
+    );
+  }
+
+  @override
+  Future<void> deleteSession(String sessionId) {
+    return _apiService.deleteSession(
+      AuthDeleteSessionRequestModel(sessionId: sessionId),
     );
   }
 

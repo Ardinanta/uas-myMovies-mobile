@@ -78,6 +78,15 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, void>> logout() async {
     try {
+      final session = await _localDataSource.getSession();
+      try {
+        if (session != null && !session.isGuest) {
+          await _remoteDataSource.deleteSession(session.sessionId);
+        }
+      } catch (_) {
+        // Local logout must still succeed when the remote session is expired.
+      }
+
       await _localDataSource.clearSession();
       return const Right(null);
     } catch (error) {

@@ -5,8 +5,10 @@ import 'data/datasources/auth_local_data_source.dart';
 import 'data/datasources/auth_remote_data_source.dart';
 import 'data/repositories/auth_repository_impl.dart';
 import 'domain/repositories/auth_repository.dart';
+import 'domain/usecases/get_saved_auth_session.dart';
 import 'domain/usecases/login_as_guest.dart';
 import 'domain/usecases/login_with_tmdb.dart';
+import 'domain/usecases/logout_from_tmdb.dart';
 import 'presentation/bloc/login/login_bloc.dart';
 
 final authSl = GetIt.instance;
@@ -46,6 +48,18 @@ void setupAuthDependencies({GetIt? getIt}) {
   if (!sl.isRegistered<LoginAsGuest>()) {
     sl.registerLazySingleton<LoginAsGuest>(
       () => LoginAsGuest(sl<AuthRepository>()),
+    );
+  }
+
+  if (!sl.isRegistered<GetSavedAuthSession>()) {
+    sl.registerLazySingleton<GetSavedAuthSession>(
+      () => GetSavedAuthSession(sl<AuthRepository>()),
+    );
+  }
+
+  if (!sl.isRegistered<LogoutFromTmdb>()) {
+    sl.registerLazySingleton<LogoutFromTmdb>(
+      () => LogoutFromTmdb(sl<AuthRepository>()),
     );
   }
 

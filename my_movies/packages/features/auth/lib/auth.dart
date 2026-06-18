@@ -3,6 +3,7 @@ export 'data/datasources/auth_api_service.dart';
 export 'data/datasources/auth_local_data_source.dart';
 export 'data/datasources/auth_remote_data_source.dart';
 export 'data/models/auth_create_session_request_model.dart';
+export 'data/models/auth_delete_session_request_model.dart';
 export 'data/models/auth_request_token_model.dart';
 export 'data/models/auth_session_model.dart';
 export 'data/models/auth_validate_login_request_model.dart';
