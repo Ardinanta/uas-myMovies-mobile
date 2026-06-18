@@ -3,10 +3,16 @@ import 'package:dio/dio.dart';
 import '../api/tmdb_api.dart';
 import '../constants/tmdb_constants.dart';
 import '../error/exception.dart';
+import '../storage/local_storage_service.dart';
+import '../storage/secure_storage_service.dart';
 import 'api_interceptor.dart';
+import 'auth_interceptor.dart';
 
 class DioClient {
-  DioClient({Dio? dio}) : _dio = dio ?? _createDio();
+  DioClient({
+    Dio? dio,
+    LocalStorageService? storageService,
+  }) : _dio = dio ?? _createDio(storageService);
 
   final Dio _dio;
 
@@ -64,7 +70,7 @@ class DioClient {
     );
   }
 
-  static Dio _createDio() {
+  static Dio _createDio(LocalStorageService? storageService) {
     final dio = Dio(
       BaseOptions(
         baseUrl: TmdbConstants.baseUrl,
@@ -77,6 +83,11 @@ class DioClient {
     );
 
     dio.interceptors.add(const ApiInterceptor());
+    dio.interceptors.add(
+      AuthInterceptor(
+        storageService: storageService ?? const SecureStorageService(),
+      ),
+    );
     return dio;
   }
 }

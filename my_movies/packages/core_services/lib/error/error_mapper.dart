@@ -12,6 +12,10 @@ abstract class ErrorMapper {
         type: FailureType.missingApiKey,
         message: 'TMDb API key belum diset.',
       ),
+      MissingAuthSessionException() => const Failure(
+        type: FailureType.missingAuthSession,
+        message: 'Silakan login terlebih dahulu.',
+      ),
       ServerException() => Failure(
         type: _failureTypeFromStatusCode(error.statusCode),
         message: error.message,
@@ -39,6 +43,9 @@ abstract class ErrorMapper {
   static Failure _mapDioException(DioException error) {
     final innerError = error.error;
     if (innerError is MissingApiKeyException) {
+      return map(innerError);
+    }
+    if (innerError is MissingAuthSessionException) {
       return map(innerError);
     }
 

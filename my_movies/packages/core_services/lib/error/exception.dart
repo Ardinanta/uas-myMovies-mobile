@@ -39,3 +39,12 @@ class MissingApiKeyException implements Exception {
   @override
   String toString() => 'MissingApiKeyException: TMDb API key belum diset.';
 }
+
+class MissingAuthSessionException implements Exception {
+  const MissingAuthSessionException();
+
+  @override
+  String toString() {
+    return 'MissingAuthSessionException: TMDb session belum tersedia.';
+  }
+}

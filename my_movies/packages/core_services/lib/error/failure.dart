@@ -1,5 +1,6 @@
 enum FailureType {
   missingApiKey,
+  missingAuthSession,
   noInternet,
   connectionTimeout,
   sendTimeout,

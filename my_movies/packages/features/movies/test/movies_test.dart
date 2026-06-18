@@ -38,6 +38,24 @@ class _FakeMovieRepository implements MovieRepository {
   }
 
   @override
+  Future<Either<Failure, List<CastMember>>> getMovieCast(int movieId) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, List<Movie>>> getRelatedMovies({
+    required int movieId,
+    int page = 1,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, List<MovieVideo>>> getMovieVideos(int movieId) {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<Either<Failure, List<Movie>>> getNowPlayingMovies({int page = 1}) {
     throw UnimplementedError();
   }

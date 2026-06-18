@@ -21,7 +21,8 @@ class AppRouter {
       builder: (context) {
         return switch (settings.name) {
           AppRoutes.login => LoginPage(
-            onLogin: () {
+            loginBloc: createLoginBloc(),
+            onLogin: (_) {
               Navigator.of(context).pushReplacementNamed(AppRoutes.home);
             },
           ),
@@ -39,9 +40,14 @@ class AppRouter {
               ).pushNamed(AppRoutes.movieDetail, arguments: movieId);
             },
           ),
-          AppRoutes.movieDetail => const _RoutePlaceholderPage(
-            title: 'Detail Movie',
-            routeName: AppRoutes.movieDetail,
+          AppRoutes.movieDetail => MovieDetailPage(
+            movieId: _movieIdFromArguments(settings.arguments),
+            detailBloc: createMovieDetailBloc(),
+            onRelatedMovieTap: (movieId) {
+              Navigator.of(
+                context,
+              ).pushReplacementNamed(AppRoutes.movieDetail, arguments: movieId);
+            },
           ),
           AppRoutes.search => const _RoutePlaceholderPage(
             title: 'Search Movies',
@@ -59,6 +65,14 @@ class AppRouter {
       },
     );
   }
+}
+
+int _movieIdFromArguments(Object? arguments) {
+  if (arguments is int) {
+    return arguments;
+  }
+
+  return 0;
 }
 
 class _RoutePlaceholderPage extends StatelessWidget {

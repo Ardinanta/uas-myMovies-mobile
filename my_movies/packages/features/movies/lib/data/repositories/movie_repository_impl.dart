@@ -1,7 +1,9 @@
 import 'package:core_services/core_services.dart';
 import 'package:either_dart/either.dart';
 
+import '../../domain/entities/cast_member.dart';
 import '../../domain/entities/movie.dart';
+import '../../domain/entities/movie_video.dart';
 import '../../domain/repositories/movie_repository.dart';
 import '../datasources/movie_remote_data_source.dart';
 
@@ -75,6 +77,42 @@ class MovieRepositoryImpl implements MovieRepository {
     try {
       final movie = await _remoteDataSource.getMovieDetail(movieId);
       return Right(movie.toEntity());
+    } catch (error) {
+      return Left(ErrorMapper.map(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<CastMember>>> getMovieCast(int movieId) async {
+    try {
+      final response = await _remoteDataSource.getMovieCredits(movieId);
+      return Right(response.cast.map((cast) => cast.toEntity()).toList());
+    } catch (error) {
+      return Left(ErrorMapper.map(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Movie>>> getRelatedMovies({
+    required int movieId,
+    int page = 1,
+  }) async {
+    try {
+      final response = await _remoteDataSource.getRelatedMovies(
+        movieId: movieId,
+        page: page,
+      );
+      return Right(response.results.map((movie) => movie.toEntity()).toList());
+    } catch (error) {
+      return Left(ErrorMapper.map(error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<MovieVideo>>> getMovieVideos(int movieId) async {
+    try {
+      final response = await _remoteDataSource.getMovieVideos(movieId);
+      return Right(response.results.map((video) => video.toEntity()).toList());
     } catch (error) {
       return Left(ErrorMapper.map(error));
     }

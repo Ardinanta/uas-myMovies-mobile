@@ -20,8 +20,10 @@ dependencies:
   dio: ^5.9.2
   either_dart: ^1.0.0
   flutter_bloc: ^9.1.1
+  get_it: ^8.2.0
   json_annotation: ^4.9.0
   retrofit: ^4.7.3
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:

@@ -15,11 +15,22 @@ dependencies:
     sdk: flutter
   core_ui:
     path: ../../core_ui
+  core_services:
+    path: ../../core_services
+  dio: ^5.9.2
+  either_dart: ^1.0.0
+  flutter_bloc: ^9.1.1
+  get_it: ^8.2.0
+  json_annotation: ^4.9.0
+  retrofit: ^4.7.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^2.4.15
   flutter_lints: ^6.0.0
+  json_serializable: ^6.9.5
+  retrofit_generator: ^10.2.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

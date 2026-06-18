@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:core_services/core_services.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../models/movie_credits_response_model.dart';
 import '../models/movie_model.dart';
 import '../models/movie_response_model.dart';
+import '../models/movie_video_response_model.dart';
 
 part 'movie_api_service.g.dart';
 
@@ -38,6 +40,22 @@ abstract class MovieApiService {
 
   @GET(TmdbApi.movieDetail)
   Future<MovieModel> getMovieDetail(@Path('movieId') int movieId);
+
+  @GET(TmdbApi.movieCredits)
+  Future<MovieCreditsResponseModel> getMovieCredits(
+    @Path('movieId') int movieId,
+  );
+
+  @GET(TmdbApi.relatedMovies)
+  Future<MovieResponseModel> getRelatedMovies({
+    @Path('movieId') required int movieId,
+    @Query('page') int page = 1,
+  });
+
+  @GET(TmdbApi.movieVideos)
+  Future<MovieVideoResponseModel> getMovieVideos(
+    @Path('movieId') int movieId,
+  );
 
   @GET(TmdbApi.searchMovies)
   Future<MovieResponseModel> searchMovies({

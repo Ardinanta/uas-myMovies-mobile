@@ -1,7 +1,9 @@
 import 'package:core_services/core_services.dart';
 
+import '../models/movie_credits_response_model.dart';
 import '../models/movie_model.dart';
 import '../models/movie_response_model.dart';
+import '../models/movie_video_response_model.dart';
 import 'movie_api_service.dart';
 
 abstract class MovieRemoteDataSource {
@@ -16,6 +18,15 @@ abstract class MovieRemoteDataSource {
   Future<MovieResponseModel> getUpcomingMovies({int page = 1});
 
   Future<MovieModel> getMovieDetail(int movieId);
+
+  Future<MovieCreditsResponseModel> getMovieCredits(int movieId);
+
+  Future<MovieResponseModel> getRelatedMovies({
+    required int movieId,
+    int page = 1,
+  });
+
+  Future<MovieVideoResponseModel> getMovieVideos(int movieId);
 
   Future<MovieResponseModel> searchMovies({
     required String query,
@@ -63,6 +74,24 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
   @override
   Future<MovieModel> getMovieDetail(int movieId) {
     return _apiService.getMovieDetail(movieId);
+  }
+
+  @override
+  Future<MovieCreditsResponseModel> getMovieCredits(int movieId) {
+    return _apiService.getMovieCredits(movieId);
+  }
+
+  @override
+  Future<MovieResponseModel> getRelatedMovies({
+    required int movieId,
+    int page = 1,
+  }) {
+    return _apiService.getRelatedMovies(movieId: movieId, page: page);
+  }
+
+  @override
+  Future<MovieVideoResponseModel> getMovieVideos(int movieId) {
+    return _apiService.getMovieVideos(movieId);
   }
 
   @override

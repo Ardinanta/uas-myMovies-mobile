@@ -6,10 +6,20 @@ import 'login_text_field.dart';
 class LoginCard extends StatelessWidget {
   const LoginCard({
     super.key,
-    this.onLogin,
+    required this.usernameController,
+    required this.passwordController,
+    required this.onLogin,
+    required this.onGuestLogin,
+    this.isLoading = false,
+    this.errorMessage,
   });
 
-  final VoidCallback? onLogin;
+  final TextEditingController usernameController;
+  final TextEditingController passwordController;
+  final VoidCallback onLogin;
+  final VoidCallback onGuestLogin;
+  final bool isLoading;
+  final String? errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -32,23 +42,40 @@ class LoginCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('EMAIL / USERNAME', style: _fieldLabelStyle),
+            Text('USERNAME', style: _fieldLabelStyle),
             const SizedBox(height: 8),
-            const LoginTextField(
+            LoginTextField(
+              controller: usernameController,
               hintText: 'Enter your account',
               icon: Icons.person_outline_rounded,
+              enabled: !isLoading,
+              textInputAction: TextInputAction.next,
             ),
             const SizedBox(height: 14),
             Text('PASSWORD', style: _fieldLabelStyle),
             const SizedBox(height: 8),
-            const LoginTextField(
+            LoginTextField(
+              controller: passwordController,
               hintText: '********',
               icon: Icons.lock_outline_rounded,
               obscureText: true,
+              enabled: !isLoading,
+              textInputAction: TextInputAction.done,
+              onSubmitted: (_) => isLoading ? null : onLogin(),
             ),
+            if (errorMessage != null) ...[
+              const SizedBox(height: 14),
+              Text(
+                errorMessage!,
+                style: AppTextStyles.bodySm.copyWith(
+                  color: AppColors.cinematicRed,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
             const SizedBox(height: 26),
             FilledButton(
-              onPressed: onLogin,
+              onPressed: isLoading ? null : onLogin,
               style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
                 backgroundColor: AppColors.cinematicRed,
@@ -60,7 +87,33 @@ class LoginCard extends StatelessWidget {
                   borderRadius: AppRadius.regularBorder,
                 ),
               ),
-              child: const Text('Login'),
+              child: isLoading
+                  ? const SizedBox.square(
+                      dimension: 22,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.4,
+                        color: AppColors.white,
+                      ),
+                    )
+                  : const Text('Login'),
+            ),
+            const SizedBox(height: 12),
+            OutlinedButton(
+              onPressed: isLoading ? null : onGuestLogin,
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(48),
+                foregroundColor: AppColors.white,
+                side: BorderSide(
+                  color: AppColors.white.withValues(alpha: 0.14),
+                ),
+                textStyle: AppTextStyles.titleMd.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: AppRadius.regularBorder,
+                ),
+              ),
+              child: const Text('Login sebagai Guest'),
             ),
           ],
         ),
