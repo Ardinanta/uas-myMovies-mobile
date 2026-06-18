@@ -2,6 +2,7 @@ import 'package:auth/auth.dart';
 import 'package:favorite/favorite.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/movies.dart';
+import 'package:profile/profile.dart';
 
 class AppRoutes {
   const AppRoutes._();
@@ -11,6 +12,7 @@ class AppRoutes {
   static const movieDetail = '/movie-detail';
   static const search = '/search';
   static const favorite = '/favorite';
+  static const profile = '/profile';
 }
 
 class AppRouter {
@@ -35,6 +37,9 @@ class AppRouter {
             onFavoriteTap: () {
               Navigator.of(context).pushNamed(AppRoutes.favorite);
             },
+            onProfileTap: () {
+              Navigator.of(context).pushNamed(AppRoutes.profile);
+            },
             onMovieTap: (movieId) {
               Navigator.of(
                 context,
@@ -58,6 +63,9 @@ class AppRouter {
             onFavoriteTap: () {
               Navigator.of(context).pushNamed(AppRoutes.favorite);
             },
+            onProfileTap: () {
+              Navigator.of(context).pushReplacementNamed(AppRoutes.profile);
+            },
             onMovieTap: (movieId) {
               Navigator.of(
                 context,
@@ -72,10 +80,31 @@ class AppRouter {
             onSearchTap: () {
               Navigator.of(context).pushReplacementNamed(AppRoutes.search);
             },
+            onProfileTap: () {
+              Navigator.of(context).pushReplacementNamed(AppRoutes.profile);
+            },
             onMovieTap: (movieId) {
               Navigator.of(
                 context,
               ).pushNamed(AppRoutes.movieDetail, arguments: movieId);
+            },
+          ),
+          AppRoutes.profile => ProfilePage(
+            profileBloc: createProfileBloc(),
+            onHomeTap: () {
+              Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+            },
+            onSearchTap: () {
+              Navigator.of(context).pushReplacementNamed(AppRoutes.search);
+            },
+            onFavoriteTap: () {
+              Navigator.of(context).pushReplacementNamed(AppRoutes.favorite);
+            },
+            onLogout: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                AppRoutes.login,
+                (route) => false,
+              );
             },
           ),
           _ => const _RoutePlaceholderPage(

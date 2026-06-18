@@ -24,6 +24,7 @@ workspace:
   - packages/features/auth
   - packages/features/favorite
   - packages/features/movies
+  - packages/features/profile
 
 melos:
   scripts:
@@ -64,6 +65,11 @@ dependencies:
 
   favorite:
     path: packages/features/favorite
+
+  profile:
+    path: packages/features/profile
+
+  get_it: ^8.2.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
