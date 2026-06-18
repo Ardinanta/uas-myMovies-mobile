@@ -15,11 +15,11 @@ class FavoriteLocalDataSourceImpl implements FavoriteLocalDataSource {
 
   final LocalStorageService _storage;
 
-  static const String _favoritesKey = 'favorite_movies';
+  static const String _favoritesKeyPrefix = 'favorite_movies';
 
   @override
   Future<List<FavoriteMovieModel>> getFavoriteMovies() async {
-    final rawFavorites = await _storage.getString(_favoritesKey);
+    final rawFavorites = await _storage.getString(await _favoritesKey());
     if (rawFavorites == null || rawFavorites.isEmpty) {
       return const [];
     }
@@ -44,6 +44,26 @@ class FavoriteLocalDataSourceImpl implements FavoriteLocalDataSource {
     final encoded = jsonEncode(
       movies.map((movie) => movie.toJson()).toList(),
     );
-    return _storage.saveString(_favoritesKey, encoded);
+    return _saveFavorites(encoded);
+  }
+
+  Future<void> _saveFavorites(String encoded) async {
+    await _storage.saveString(await _favoritesKey(), encoded);
+  }
+
+  Future<String> _favoritesKey() async {
+    final isGuest = await _storage.getString(AuthStorageKeys.isGuest);
+    final accountId = await _storage.getString(AuthStorageKeys.accountId);
+    final sessionId = await _storage.getString(AuthStorageKeys.sessionId);
+
+    if (isGuest == 'true' && sessionId != null && sessionId.trim().isNotEmpty) {
+      return '${_favoritesKeyPrefix}_guest_${sessionId.trim()}';
+    }
+
+    if (accountId != null && accountId.trim().isNotEmpty) {
+      return '${_favoritesKeyPrefix}_account_${accountId.trim()}';
+    }
+
+    return '${_favoritesKeyPrefix}_anonymous';
   }
 }
