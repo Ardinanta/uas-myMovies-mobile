@@ -49,9 +49,19 @@ class AppRouter {
               ).pushReplacementNamed(AppRoutes.movieDetail, arguments: movieId);
             },
           ),
-          AppRoutes.search => const _RoutePlaceholderPage(
-            title: 'Search Movies',
-            routeName: AppRoutes.search,
+          AppRoutes.search => SearchPage(
+            searchBloc: createSearchBloc(),
+            onHomeTap: () {
+              Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+            },
+            onFavoriteTap: () {
+              Navigator.of(context).pushNamed(AppRoutes.favorite);
+            },
+            onMovieTap: (movieId) {
+              Navigator.of(
+                context,
+              ).pushNamed(AppRoutes.movieDetail, arguments: movieId);
+            },
           ),
           AppRoutes.favorite => const _RoutePlaceholderPage(
             title: 'Favorite Movies',

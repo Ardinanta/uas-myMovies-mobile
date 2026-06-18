@@ -61,20 +61,23 @@ class _FakeMovieRepository implements MovieRepository {
   }
 
   @override
-  Future<Either<Failure, List<Movie>>> searchMovies({
-    required String query,
+  Future<Either<Failure, List<MovieGenre>>> getMovieGenres() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, List<Movie>>> getMoviesByGenre({
+    required int genreId,
     int page = 1,
   }) {
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, List<Movie>>> getFavoriteMovies({int page = 1}) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, List<Movie>>> getFavoriteTv({int page = 1}) {
+  Future<Either<Failure, List<Movie>>> searchMovies({
+    required String query,
+    int page = 1,
+  }) {
     throw UnimplementedError();
   }
 

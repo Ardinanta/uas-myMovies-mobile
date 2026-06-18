@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../domain/usecases/get_popular_movies.dart';
-import '../../../domain/usecases/get_top_rated_movies.dart';
-import '../../../domain/usecases/get_trending_movies.dart';
-import '../../../domain/usecases/get_upcoming_movies.dart';
+import '../../../domain/usecases/home/get_popular_movies.dart';
+import '../../../domain/usecases/home/get_top_rated_movies.dart';
+import '../../../domain/usecases/home/get_trending_movies.dart';
+import '../../../domain/usecases/home/get_upcoming_movies.dart';
 import '../../view_models/home_movie_view_model.dart';
 import 'home_event.dart';
 import 'home_state.dart';

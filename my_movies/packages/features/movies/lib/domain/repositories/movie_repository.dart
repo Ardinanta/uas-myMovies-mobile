@@ -3,6 +3,7 @@ import 'package:either_dart/either.dart';
 
 import '../entities/cast_member.dart';
 import '../entities/movie.dart';
+import '../entities/movie_genre.dart';
 import '../entities/movie_video.dart';
 
 abstract class MovieRepository {
@@ -15,6 +16,13 @@ abstract class MovieRepository {
   Future<Either<Failure, List<Movie>>> getTopRatedMovies({int page = 1});
 
   Future<Either<Failure, List<Movie>>> getUpcomingMovies({int page = 1});
+
+  Future<Either<Failure, List<MovieGenre>>> getMovieGenres();
+
+  Future<Either<Failure, List<Movie>>> getMoviesByGenre({
+    required int genreId,
+    int page = 1,
+  });
 
   Future<Either<Failure, Movie>> getMovieDetail(int movieId);
 
@@ -31,8 +39,4 @@ abstract class MovieRepository {
     required String query,
     int page = 1,
   });
-
-  Future<Either<Failure, List<Movie>>> getFavoriteMovies({int page = 1});
-
-  Future<Either<Failure, List<Movie>>> getFavoriteTv({int page = 1});
 }

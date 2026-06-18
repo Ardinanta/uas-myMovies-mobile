@@ -13,6 +13,8 @@ abstract class TmdbApi {
   static const String relatedMovies = '/movie/{movieId}/recommendations';
   static const String movieVideos = '/movie/{movieId}/videos';
   static const String searchMovies = '/search/movie';
+  static const String movieGenres = '/genre/movie/list';
+  static const String discoverMovies = '/discover/movie';
 
   //auth
   static const String createRequestToken = '/authentication/token/new';

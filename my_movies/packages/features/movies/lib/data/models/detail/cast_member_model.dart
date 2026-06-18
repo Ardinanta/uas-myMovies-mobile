@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../domain/entities/cast_member.dart';
+import '../../../domain/entities/cast_member.dart';
 
 part 'cast_member_model.g.dart';
 

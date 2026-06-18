@@ -4,16 +4,20 @@ import 'package:get_it/get_it.dart';
 import 'data/datasources/movie_remote_data_source.dart';
 import 'data/repositories/movie_repository_impl.dart';
 import 'domain/repositories/movie_repository.dart';
-import 'domain/usecases/get_movie_cast.dart';
-import 'domain/usecases/get_movie_detail.dart';
-import 'domain/usecases/get_movie_videos.dart';
-import 'domain/usecases/get_popular_movies.dart';
-import 'domain/usecases/get_related_movies.dart';
-import 'domain/usecases/get_top_rated_movies.dart';
-import 'domain/usecases/get_trending_movies.dart';
-import 'domain/usecases/get_upcoming_movies.dart';
+import 'domain/usecases/detail/get_movie_cast.dart';
+import 'domain/usecases/detail/get_movie_detail.dart';
+import 'domain/usecases/detail/get_movie_videos.dart';
+import 'domain/usecases/detail/get_related_movies.dart';
+import 'domain/usecases/home/get_popular_movies.dart';
+import 'domain/usecases/home/get_top_rated_movies.dart';
+import 'domain/usecases/home/get_trending_movies.dart';
+import 'domain/usecases/home/get_upcoming_movies.dart';
+import 'domain/usecases/search/get_movie_genres.dart';
+import 'domain/usecases/search/get_movies_by_genre.dart';
+import 'domain/usecases/search/search_movies.dart';
 import 'presentation/bloc/home/home_bloc.dart';
 import 'presentation/bloc/detail/movie_detail_bloc.dart';
+import 'presentation/bloc/search/search_bloc.dart';
 
 final moviesSl = GetIt.instance;
 
@@ -52,6 +56,21 @@ void setupMoviesDependencies({GetIt? getIt}) {
   if (!sl.isRegistered<GetUpcomingMovies>()) {
     sl.registerLazySingleton<GetUpcomingMovies>(
       () => GetUpcomingMovies(sl<MovieRepository>()),
+    );
+  }
+  if (!sl.isRegistered<GetMovieGenres>()) {
+    sl.registerLazySingleton<GetMovieGenres>(
+      () => GetMovieGenres(sl<MovieRepository>()),
+    );
+  }
+  if (!sl.isRegistered<GetMoviesByGenre>()) {
+    sl.registerLazySingleton<GetMoviesByGenre>(
+      () => GetMoviesByGenre(sl<MovieRepository>()),
+    );
+  }
+  if (!sl.isRegistered<SearchMovies>()) {
+    sl.registerLazySingleton<SearchMovies>(
+      () => SearchMovies(sl<MovieRepository>()),
     );
   }
   if (!sl.isRegistered<GetMovieDetail>()) {
@@ -96,6 +115,18 @@ void setupMoviesDependencies({GetIt? getIt}) {
       ),
     );
   }
+
+  if (!sl.isRegistered<SearchBloc>()) {
+    sl.registerFactory<SearchBloc>(
+      () => SearchBloc(
+        getTrendingMovies: sl<GetTrendingMovies>(),
+        getPopularMovies: sl<GetPopularMovies>(),
+        getMovieGenres: sl<GetMovieGenres>(),
+        getMoviesByGenre: sl<GetMoviesByGenre>(),
+        searchMovies: sl<SearchMovies>(),
+      ),
+    );
+  }
 }
 
 HomeBloc createHomeBloc({DioClient? dioClient}) {
@@ -133,5 +164,25 @@ MovieDetailBloc createMovieDetailBloc({DioClient? dioClient}) {
     getMovieCast: GetMovieCast(repository),
     getRelatedMovies: GetRelatedMovies(repository),
     getMovieVideos: GetMovieVideos(repository),
+  );
+}
+
+SearchBloc createSearchBloc({DioClient? dioClient}) {
+  if (dioClient == null) {
+    setupMoviesDependencies();
+    return moviesSl<SearchBloc>();
+  }
+
+  final remoteDataSource = MovieRemoteDataSourceImpl(
+    dioClient: dioClient,
+  );
+  final repository = MovieRepositoryImpl(remoteDataSource);
+
+  return SearchBloc(
+    getTrendingMovies: GetTrendingMovies(repository),
+    getPopularMovies: GetPopularMovies(repository),
+    getMovieGenres: GetMovieGenres(repository),
+    getMoviesByGenre: GetMoviesByGenre(repository),
+    searchMovies: SearchMovies(repository),
   );
 }

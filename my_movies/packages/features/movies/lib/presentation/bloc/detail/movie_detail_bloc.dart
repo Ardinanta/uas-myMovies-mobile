@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/entities/movie_video.dart';
-import '../../../domain/usecases/get_movie_cast.dart';
-import '../../../domain/usecases/get_movie_detail.dart';
-import '../../../domain/usecases/get_movie_videos.dart';
-import '../../../domain/usecases/get_related_movies.dart';
+import '../../../domain/usecases/detail/get_movie_cast.dart';
+import '../../../domain/usecases/detail/get_movie_detail.dart';
+import '../../../domain/usecases/detail/get_movie_videos.dart';
+import '../../../domain/usecases/detail/get_related_movies.dart';
 import '../../view_models/home_movie_view_model.dart';
 import '../../view_models/movie_detail_view_model.dart';
 import 'movie_detail_event.dart';

@@ -1,8 +1,8 @@
 import 'package:core_services/core_services.dart';
 import 'package:either_dart/either.dart';
 
-import '../entities/movie.dart';
-import '../repositories/movie_repository.dart';
+import '../../entities/movie.dart';
+import '../../repositories/movie_repository.dart';
 
 class GetNowPlayingMovies {
   const GetNowPlayingMovies(this._repository);

@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../domain/entities/movie_video.dart';
+import '../../../domain/entities/movie_video.dart';
 
 part 'movie_video_model.g.dart';
 
